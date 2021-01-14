@@ -331,50 +331,39 @@ Public Class frmImballi
 
         If txtNumImbContestati.Text <> "" AndAlso IsNumeric(txtNumImbContestati.Text) AndAlso CDbl(txtNumImbContestati.Text) >= 0 Then
             txtPezziContestati.Text = CDbl(txtNumImbContestati.Text) * tmpPezzatura
-        Else
-            txtNumImbContestati.Text = "0"
-            txtPezziContestati.Text = "0"
+
+            txtTotImbContestati.Text = (CDbl(txtimbNCaMAG.Text) + CDbl(txtNumImbContestati.Text)).ToString
+            txtTotPezziContestati.Text = (CDbl(txtNrPzMacinati.Text) + CDbl(txtPezziContestati.Text)).ToString
         End If
-
-        txtTotImbContestati.Text = (CDbl(txtimbNCaMAG.Text) + CDbl(txtNumImbContestati.Text)).ToString
-        txtTotPezziContestati.Text = (CDbl(txtNrPzMacinati.Text) + CDbl(txtPezziContestati.Text)).ToString
-
     End Sub
 
     Private Sub txtimbNCaMAG_TextChanged(sender As System.Object, e As System.EventArgs) Handles txtimbNCaMAG.TextChanged
 
-        If txtimbNCaMAG.Text <> "" AndAlso IsNumeric(txtimbNCaMAG.Text) AndAlso CDbl(txtimbNCaMAG.Text) >= 0 Then
+        If txtimbNCaMAG.Text <> "" Then
             txtNcAMag.Text = CDbl(txtimbNCaMAG.Text) * tmpPezzatura
-        Else
-            txtimbNCaMAG.Text = "0"
-            txtNcAMag.Text = "0"
-        End If
 
-        If txtNumImbContestati.Text <> "" Then
-            txtTotImbContestati.Text = (CDbl(txtimbNCaMAG.Text) + CDbl(txtNumImbContestati.Text)).ToString
-        Else
-            txtTotImbContestati.Text = txtimbNCaMAG.Text
-        End If
+            txtTotPezziContestati.Text = (CDbl(txtNcAMag.Text) + CDbl(txtPezziContestati.Text)).ToString
 
-        txtTotPezziContestati.Text = (CDbl(txtNrPzMacinati.Text) + CDbl(txtPezziContestati.Text)).ToString
+            If txtNumImbContestati.Text <> "" Then
+                txtTotImbContestati.Text = (CDbl(txtimbNCaMAG.Text) + CDbl(txtNumImbContestati.Text)).ToString
+            Else
+                txtTotImbContestati.Text = txtimbNCaMAG.Text
+            End If
+        End If
 
     End Sub
 
     Private Sub txtimbresi_TextChanged(sender As System.Object, e As System.EventArgs) Handles txtimbresi.TextChanged
-        If txtimbresi.Text <> "" AndAlso IsNumeric(txtimbresi.Text) AndAlso CDbl(txtimbresi.Text) >= 0 Then
+        If txtimbresi.Text <> "" Then
             txtNrPzResi.Text = CDbl(txtimbresi.Text) * tmpPezzatura
-        Else
-            txtimbresi.Text = "0"
-            txtNrPzResi.Text = "0"
+
         End If
     End Sub
 
     Private Sub txtimbrimessiaMag_TextChanged(sender As System.Object, e As System.EventArgs) Handles txtimbrimessiaMag.TextChanged
         If txtimbrimessiaMag.Text <> "" AndAlso IsNumeric(txtimbrimessiaMag.Text) AndAlso CDbl(txtimbrimessiaMag.Text) >= 0 Then
             txtPzRimessiAMag.Text = CDbl(txtimbrimessiaMag.Text) * tmpPezzatura
-        Else
-            txtimbrimessiaMag.Text = "0"
-            txtPzRimessiAMag.Text = "0"
+
         End If
     End Sub
 

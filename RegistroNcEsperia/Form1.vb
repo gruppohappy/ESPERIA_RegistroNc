@@ -122,20 +122,28 @@ Public Class Form1
         ''''''''''''DIFETTI_CRITICI'''''''''''''''''''''''
         cnDB.Open()
 
-        query = "SELECT * FROM DIFETTI_CRITICI"
+        query = "SELECT * FROM DIFETTI_CRITICI ORDER BY ID ASC"
 
         myDA.SelectCommand = New OleDbCommand(query, cnDB)
         myDA.Fill(tabDifettiCritici)
 
         cnDB.Close()
 
+        cmbIdDifettoCritico.Items.Clear()
+        cmbDifettoCritico.Items.Clear()
+
         cmbIdDifettoCritico.Items.Add("-1")
         cmbDifettoCritico.Items.Add("")
 
-        For Each row In tabDifettiCritici.Rows
-            cmbIdDifettoCritico.Items.Add(row("ID").ToString)
-            cmbDifettoCritico.Items.Add(row("DESCRIZIONE"))
-        Next
+        cmbDifettoCritico.DataSource = tabDifettiCritici
+        cmbDifettoCritico.DisplayMember = "DESCRIZIONE"
+        cmbDifettoCritico.ValueMember = "ID"
+
+
+        'For Each row In tabDifettiCritici.Rows
+        '    cmbIdDifettoCritico.Items.Add(row("ID").ToString)
+        '    cmbDifettoCritico.Items.Add(row("DESCRIZIONE"))
+        'Next
 
         prgBar_loadingData.PerformStep()
         '''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -450,9 +458,12 @@ Public Class Form1
                     cmbCategoria.SelectedIndex = 0
                 End If
 
+                Dim idDifettoIndex As Integer = 0
+
+
                 If Not IsDBNull(row("DIFETTO_CRITICO")) Then
                     cmbIdDifettoCritico.SelectedItem = row("DIFETTO_CRITICO").ToString
-                    cmbDifettoCritico.SelectedIndex = cmbIdDifettoCritico.SelectedIndex
+                    cmbDifettoCritico.SelectedValue = row("DIFETTO_CRITICO").ToString
                 Else
                     cmbDifettoCritico.SelectedIndex = 0
                 End If
@@ -539,26 +550,7 @@ Public Class Form1
     End Sub
 
     Private Sub cmbMacrocategoria_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cmbMacrocategoria.SelectedIndexChanged
-        cmbIdMacroCat.SelectedIndex = cmbMacrocategoria.SelectedIndex
-        ' Richiesta Davide Masini: quando cambio macrocategoria, rendo selezionabili solo i difetti critici con collegato l'id macrocategoria appena selezionato
-        cmbDifettoCritico.Items.Clear()
-        tabDifettiCritici.Clear()
-        Dim ID As Integer = cmbIdMacroCat.SelectedIndex
-        Try
-            cnDB.Open()
-            query = $"SELECT * FROM DIFETTI_CRITICI_NEW WHERE ID_MACROCATEGORIA = {ID}"
-            myDA.SelectCommand = New OleDbCommand(query, cnDB)
-            myDA.Fill(tabDifettiCritici)
-            cnDB.Close()
 
-            For Each row In tabDifettiCritici.Rows
-                cmbIdDifettoCritico.Items.Add(row("ID"))
-                cmbDifettoCritico.Items.Add(row("DESCRIZIONE"))
-            Next
-
-        Catch ex As Exception
-            MessageBox.Show(ex.ToString(), "Selezione macrocategoria", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
     End Sub
 
     Private Sub cmbCategoria_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cmbCategoria.SelectedIndexChanged
@@ -566,7 +558,7 @@ Public Class Form1
     End Sub
 
     Private Sub cmbDifettoCritico_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cmbDifettoCritico.SelectedIndexChanged
-        cmbIdDifettoCritico.SelectedIndex = cmbDifettoCritico.SelectedIndex
+        'cmbIdDifettoCritico.SelectedIndex = cmbDifettoCritico.SelectedIndex
     End Sub
 
     Private Sub cmbIdGravProblema_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cmbIdGravProblema.SelectedIndexChanged
@@ -641,26 +633,26 @@ Public Class Form1
         If cmbTipoAnomalia.Text <> "" And cmbOrigineAnomalia.Text <> "" And cmbMacrocategoria.Text <> "" And cmbCategoria.Text <> "" And cmbGestioneMateriale.Text <> "" And cmbCodiceArticolo.Text <> "" And cmbCapoturno.Text <> "" And cmbRespTermo.Text <> "" And cmbRespEstrusione.Text <> "" Then
 
             Try
-                query = "UPDATE Registro_NC SET " & _
-                    "TIPO_DI_ANOMALIA=" & cmbIdAnomalia.SelectedItem & ", " & _
-                    "DATA_APERTURA='" & dtpDataApertura.Value.ToString & "'," & _
-                    "DATA_SEGNALAZIONE='" & dtpDataSegnalazione.Value.ToString & "'," & _
-                    "ORIGINE_ANOMALIA='" & cmbIdOrigineAnomalia.SelectedItem & "', " & _
-                    "CLIENTE_FINALE='" & cmbClienteFinale.Text.Replace("'", "") & "', " & _
-                    "DESCRIZIONE_NC='" & txtDescrizioneNC.Text.Replace("'", "") & "', " & _
-                    "GESTIONE_MATERIALE_NC =" & cmbIdGestioneMateriali.SelectedItem.ToString & ", " & _
-                    "MACROCATEGORIA_NON_CONFORMITA=" & cmbIdMacroCat.SelectedItem & ", " & _
-                    "CATEGORIA_NON_CONFORMITA=" & cmbIdCat.SelectedItem & ", " & _
-                    "DIFETTO_CRITICO=" & cmbIdDifettoCritico.SelectedItem & ", " & _
-                    "GRAVITA_PROBLEMA=" & cmbIdGravProblema.SelectedItem.ToString & ", " & _
-                    "FREQUENZA_PROBLEMA=" & cmbIdFrequenza.SelectedItem.ToString & ", " & _
-                    "CAPOTURNO='" & cmbCapoturno.SelectedItem & "', " & _
-                    "RESPONSABILE_CONFEZIONAMENTO='" & cmbRespTermo.SelectedItem & "', " & _
-                    "RESPONSABILE_ESTRUSIONE='" & cmbRespEstrusione.SelectedItem & "', " & _
-                    "ADDETTO='" & txtAddetto.Text & "', " & _
-                    "CODICE_ARTICOLO='" & cmbCodiceArticolo.SelectedItem & "', " & _
-                    "NUMERO_LOTTO='" & cmbNumeroLotto.Text & "', " & _
-                    "CODICE_PRODUZIONE='" & cmbCodiceProduzione.Text & "' " & _
+                query = "UPDATE Registro_NC SET " &
+                    "TIPO_DI_ANOMALIA=" & cmbIdAnomalia.SelectedItem & ", " &
+                    "DATA_APERTURA='" & dtpDataApertura.Value.ToString & "'," &
+                    "DATA_SEGNALAZIONE='" & dtpDataSegnalazione.Value.ToString & "'," &
+                    "ORIGINE_ANOMALIA='" & cmbIdOrigineAnomalia.SelectedItem & "', " &
+                    "CLIENTE_FINALE='" & cmbClienteFinale.Text.Replace("'", "") & "', " &
+                    "DESCRIZIONE_NC='" & txtDescrizioneNC.Text.Replace("'", "") & "', " &
+                    "GESTIONE_MATERIALE_NC =" & cmbIdGestioneMateriali.SelectedItem.ToString & ", " &
+                    "MACROCATEGORIA_NON_CONFORMITA=" & cmbIdMacroCat.SelectedItem & ", " &
+                    "CATEGORIA_NON_CONFORMITA=" & cmbIdCat.SelectedItem & ", " &
+                    "DIFETTO_CRITICO=" & cmbDifettoCritico.SelectedValue & ", " &
+                    "GRAVITA_PROBLEMA=" & cmbIdGravProblema.SelectedItem.ToString & ", " &
+                    "FREQUENZA_PROBLEMA=" & cmbIdFrequenza.SelectedItem.ToString & ", " &
+                    "CAPOTURNO='" & cmbCapoturno.SelectedItem & "', " &
+                    "RESPONSABILE_CONFEZIONAMENTO='" & cmbRespTermo.SelectedItem & "', " &
+                    "RESPONSABILE_ESTRUSIONE='" & cmbRespEstrusione.SelectedItem & "', " &
+                    "ADDETTO='" & txtAddetto.Text & "', " &
+                    "CODICE_ARTICOLO='" & cmbCodiceArticolo.SelectedItem & "', " &
+                    "NUMERO_LOTTO='" & cmbNumeroLotto.Text & "', " &
+                    "CODICE_PRODUZIONE='" & cmbCodiceProduzione.Text & "' " &
                     "where ID = " & idNC & ""
 
                 cnDB.Open()

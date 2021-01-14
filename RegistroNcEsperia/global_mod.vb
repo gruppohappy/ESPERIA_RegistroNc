@@ -10,7 +10,8 @@ Module global_mod
     Public frmListaFornitori As frmFornitori
 
     Public myConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=\\Srv-galileoesp.esperiadom.locale\esperia\ISO9001_2008-CERTIFICAZIONE ESPERIA\03 PROCEDURE DELLA QUALITA'\3.10 GESTIONE NON CONFORMITA'\3.10.05 20160830 Registro_NC_AC.mdb;"  ' real
-    'Public myConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=D:\3.10.05 20160830 Registro_NC_AC.mdb;"       ' debug
+    'Public myConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=D:\3.10.05 20160830 Registro_NC_AC.mdb"   ' debug
+
     Public cnDB As New OleDbConnection
     Public myDA As New OleDbDataAdapter
     Public myCommand As New OleDbCommand
