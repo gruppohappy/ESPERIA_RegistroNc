@@ -273,7 +273,7 @@ Public Class frmImballi
         If IsNumeric(txtimbNCaMAG.Text) And IsNumeric(txtimbresi.Text) And IsNumeric(txtimbMacinati.Text) And IsNumeric(txtimbrimessiaMag.Text) And IsNumeric(txtBobNcAMag.Text) And IsNumeric(txtBobNcPresentiaMag.Text) And IsNumeric(txtBobNcRese.Text) And IsNumeric(txtKgBobNcRese.Text) And IsNumeric(txtKgBobMacinate.Text) And IsNumeric(txtKgBobRimesseaMag.Text) And IsNumeric(txtNumImbContestati.Text) Then
             Try
                 query = "UPDATE Registro_NC SET " &
-                        "NUM_IMBALLI_CONTESTATI =" & txtNumImbContestati.Text.Replace(",", "").Replace(".", "") & ", " &
+                        "NUM_IMBALLI_CONTESTATI =" & txtNumImbContestati.Text.Replace(",", ".") & ", " &
                         "NUM_IMBALLI_NC_A_MAGAZZINO=" & txtimbNCaMAG.Text.Replace(",", ".") & ", " &
                         "NUM_IMBALLI_RESI=" & txtimbresi.Text.Replace(",", ".") & ", " &
                         "NUM_IMBALLI_MACINATI=" & txtimbMacinati.Text.Replace(",", ".") & ", " &

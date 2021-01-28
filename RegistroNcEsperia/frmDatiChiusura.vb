@@ -247,9 +247,8 @@ Public Class frmDatiChiusura
                    " OGGETTO_REPORT = '" & txtOggettoReport.Text.Replace("'", "") & "'," &
                    " COSTO_NC = '" & costoNC & "'," &
                    " Registro_NC.NOTE = '" & txtNote.Text.Replace("'", "") & "'," &
-                   " ANOMALIA_CHIUSA = '" & txtAnomaliaChiusa.Text.Replace("'", "") & "' "
-
-        '          " RISPOSTA_CLIENTE = '" & txtRispostaCliente.Text.Replace("'", "") & "'," & _ no sav. richiesto da Marco il 13/10
+                   " ANOMALIA_CHIUSA = '" & txtAnomaliaChiusa.Text.Replace("'", "") & "', " &
+                  " RISPOSTA_CLIENTE = '" & txtRispostaCliente.Text.Replace("'", "") & "'"  'no sav. richiesto da Marco il (13/10/??) --> Richiesta integrazione nell'update - Davide Masini 25/01/21
         query = query & ", DATA_CHIUSURA = '" & tmpDataChiusura & "' "
 
         query = query & " where ID = " & idNC & ""
