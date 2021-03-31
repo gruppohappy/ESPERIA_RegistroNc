@@ -550,7 +550,7 @@ Public Class Form1
     End Sub
 
     Private Sub cmbMacrocategoria_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cmbMacrocategoria.SelectedIndexChanged
-
+        cmbIdMacroCat.SelectedIndex = cmbMacrocategoria.SelectedIndex
     End Sub
 
     Private Sub cmbCategoria_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cmbCategoria.SelectedIndexChanged
@@ -661,8 +661,9 @@ Public Class Form1
                 myDA.UpdateCommand.ExecuteNonQuery()
 
                 cnDB.Close()
-            Catch
+            Catch ex As Exception
                 MessageBox.Show("Errore nell'inserimento, controllare i dati.", "Attenzione")
+                MessageBox.Show(ex.Message)
                 If cnDB.State = ConnectionState.Open Then cnDB.Close()
             End Try
 
